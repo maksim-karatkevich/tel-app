@@ -1,10 +1,13 @@
 import React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
+import Routes from './routes/index';
 
-// eslint-disable-next-line react/prefer-stateless-function
-class App extends React.Component {
-  render() {
-    return <h1>React App</h1>;
-  }
-}
+const App = () => {
+  return (
+    <Router>
+      <Routes />
+    </Router>
+  );
+};
 
 export default App;
