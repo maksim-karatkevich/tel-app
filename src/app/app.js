@@ -1,11 +1,15 @@
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import Routes from './routes/index';
+import Header from './header';
+import RoutesResolver from './routes/index';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../index.css';
 
 const App = () => {
   return (
     <Router>
-      <Routes />
+      <Header />
+      <RoutesResolver />
     </Router>
   );
 };

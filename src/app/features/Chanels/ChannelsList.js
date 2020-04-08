@@ -26,11 +26,7 @@ const ChannelsList = () => {
       <Row>
         {mockData.map((item, index) => {
           return (
-            <Link
-              key={`${item}`}
-              to={{ pathname: `${url}/${index}`, state: item }}
-              name={item.name}
-            >
+            <Link key={`${item.name}`} to={`${url}/${index}`} name={item.name}>
               <Col>
                 <ChannelItem name={item.name} src={item.img} />
               </Col>
