@@ -23,7 +23,7 @@ const Channel = ({ match }) => {
       <Row className="mt-3" justify="center" align="middle">
         <Col span={12}>
           {posts.map((post) => (
-            <Post content={post} />
+            <Post key={post.id} content={post.value} />
           ))}
         </Col>
       </Row>
