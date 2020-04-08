@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import React from 'react';
-import 'antd/dist/antd.css';
 
 const Header = () => {
   return (

@@ -1,6 +1,6 @@
 import React from 'react';
-import { Avatar } from 'antd';
 import PropTypes from 'prop-types';
+import Avatar from 'antd/lib/avatar';
 
 const ChannelItem = ({ name, src }) => {
   return (
