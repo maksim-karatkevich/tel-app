@@ -1,30 +1,17 @@
 import React from 'react';
-import { Row, Col } from 'antd';
+import { Col, Row } from 'antd';
 import { Link, useRouteMatch } from 'react-router-dom';
-import ChannelItem from './ChannelItem';
 import AddChannelForm from './AddChannelForm';
-
-const mockData = [
-  { name: 'Test1', img: 'http://i.pravatar.cc/300' },
-  { name: 'Test2', img: 'http://i.pravatar.cc/300' },
-  { name: 'Test3', img: 'http://i.pravatar.cc/300' },
-  { name: 'Test4', img: 'http://i.pravatar.cc/300' },
-  { name: 'Test5', img: 'http://i.pravatar.cc/300' },
-  { name: 'Test6', img: 'http://i.pravatar.cc/300' },
-  { name: 'Test7', img: 'http://i.pravatar.cc/300' },
-  { name: 'Test8', img: 'http://i.pravatar.cc/300' },
-  { name: 'Test9', img: 'http://i.pravatar.cc/300' },
-  { name: 'Test0', img: 'http://i.pravatar.cc/300' },
-];
+import ChannelItem from './ChannelItem';
+import { channels } from '../../utils/mockData';
 
 const ChannelsList = () => {
   const { url } = useRouteMatch();
-
   return (
     <div className="m-4">
       <AddChannelForm />
       <Row>
-        {mockData.map((item, index) => {
+        {channels.map((item, index) => {
           return (
             <Link key={`${item.name}`} to={`${url}/${index}`} name={item.name}>
               <Col>

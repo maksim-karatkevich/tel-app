@@ -3,6 +3,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import Header from './header';
 import RoutesResolver from './routes/index';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'antd/dist/antd.css';
 import '../index.css';
 
 const App = () => {
