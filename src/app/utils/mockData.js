@@ -1,4 +1,4 @@
-export const posts = [
+export const postsMockData = [
   {
     id: '0',
     value:
@@ -31,7 +31,7 @@ export const posts = [
   },
 ];
 
-export const channels = [
+export const channelsMockData = [
   { name: 'Test1', img: 'http://i.pravatar.cc/300' },
   { name: 'Test2', img: 'http://i.pravatar.cc/300' },
   { name: 'Test3', img: 'http://i.pravatar.cc/300' },

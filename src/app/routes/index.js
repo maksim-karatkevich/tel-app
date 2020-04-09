@@ -1,11 +1,14 @@
-import { Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import React from 'react';
-import ChannelsRoutes from '../features/Chanels/routes';
+import ChannelsListContainer from '../features/Chanels/containers/ChannelsListContainer';
+import ChannelPageContainer from '../features/Chanels/containers/ChannelPageContainer';
+import 'antd/dist/antd.css';
 
 const RoutesResolver = () => {
   return (
     <Switch>
-      <ChannelsRoutes />
+      <Route exact path="/channels" component={ChannelsListContainer} />
+      <Route path="/channels/:id" component={ChannelPageContainer} />
     </Switch>
   );
 };
