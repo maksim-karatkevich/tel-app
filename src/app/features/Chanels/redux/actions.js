@@ -1,5 +1,5 @@
 import { GET_CHANNELS, GET_POSTS } from './actionsTypes';
-import { channelsMockData, postsMockData } from '../../../utils/mockData';
+import { requestChannels, requestPosts } from '../service';
 
 export const getChannels = (channels) => ({
   type: GET_CHANNELS,
@@ -13,20 +13,19 @@ export const getPosts = (posts) => ({
 
 export function fetchChannels() {
   return async (dispatch) => {
-    try {
-      dispatch(getChannels(channelsMockData));
-    } catch (error) {
-      console.error(error);
-    }
+    requestChannels().then((result) => {
+      console.log(1);
+      dispatch(getChannels(result));
+    });
   };
 }
 
-export function fetchPosts() {
+export function fetchPosts(id) {
   return async (dispatch) => {
-    try {
-      dispatch(getPosts(postsMockData));
-    } catch (error) {
-      console.error(error);
-    }
+    requestPosts(id).then((result) => {
+      const postItem = result.find((item) => item.channelId === id);
+      console.log(2);
+      dispatch(getPosts(postItem ? postItem.posts : []));
+    });
   };
 }

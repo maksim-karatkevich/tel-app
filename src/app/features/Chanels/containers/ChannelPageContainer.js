@@ -3,13 +3,12 @@ import PropTypes, { arrayOf, object } from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchPosts } from '../redux/actions';
 import { getPostsData } from '../redux/selector';
-
 import Channel from '../components/Channel';
 
 const ChannelPageContainer = ({ fetchPostsData, posts, match }) => {
   useEffect(() => {
-    fetchPostsData();
-  });
+    fetchPostsData(match.params.id);
+  }, [fetchPostsData, match]);
 
   return <Channel posts={posts} match={match} />;
 };
@@ -18,9 +17,9 @@ const mapStateToProps = (state) => ({
   posts: getPostsData(state),
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  fetchPostsData: () => dispatch(fetchPosts()),
-});
+const mapDispatchToProps = {
+  fetchPostsData: fetchPosts,
+};
 
 ChannelPageContainer.propTypes = {
   fetchPostsData: PropTypes.func.isRequired,

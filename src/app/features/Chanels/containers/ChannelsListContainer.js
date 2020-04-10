@@ -1,5 +1,5 @@
+import { useRouteMatch } from 'react-router';
 import React, { useEffect } from 'react';
-import { useRouteMatch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes, { arrayOf, object } from 'prop-types';
 import AddChannelForm from '../components/AddChannelForm';
@@ -12,7 +12,7 @@ const ChannelsListContainer = ({ fetchData, channels }) => {
 
   useEffect(() => {
     fetchData();
-  });
+  }, [fetchData, channels]);
 
   return (
     <div className="m-4">
@@ -26,9 +26,9 @@ const mapStateToProps = (state) => ({
   channels: getChannelsData(state),
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  fetchData: () => dispatch(fetchChannels()),
-});
+const mapDispatchToProps = {
+  fetchData: fetchChannels,
+};
 
 ChannelsListContainer.defaultProps = {
   channels: [],
