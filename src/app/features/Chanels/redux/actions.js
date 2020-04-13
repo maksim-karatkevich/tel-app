@@ -12,20 +12,30 @@ export const getPosts = (posts) => ({
 });
 
 export function fetchChannels() {
-  return async (dispatch) => {
-    requestChannels().then((result) => {
-      console.log(1);
-      dispatch(getChannels(result));
-    });
+  return async (dispatch, getState) => {
+    const channelsExists = getState().channelsState.channels.length > 0;
+
+    if (!channelsExists) {
+      requestChannels().then((result) => {
+        dispatch(getChannels(result));
+      });
+    }
   };
 }
 
 export function fetchPosts(id) {
-  return async (dispatch) => {
-    requestPosts(id).then((result) => {
-      const postItem = result.find((item) => item.channelId === id);
-      console.log(2);
-      dispatch(getPosts(postItem ? postItem.posts : []));
-    });
+  return async (dispatch, getState) => {
+    const postsExists = !!getState().postsState.channels.find(
+      (channel) => channel.channelId === id
+    );
+
+    if (!postsExists) {
+      requestPosts(id).then((result) => {
+        const postItem = result.find((item) => item.channelId === id);
+        if (postItem) {
+          dispatch(getPosts(postItem));
+        }
+      });
+    }
   };
 }

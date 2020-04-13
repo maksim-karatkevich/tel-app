@@ -8,18 +8,17 @@ import Channel from '../components/Channel';
 const ChannelPageContainer = ({ fetchPostsData, posts, match }) => {
   useEffect(() => {
     fetchPostsData(match.params.id);
-  }, [fetchPostsData, match]);
-
+  }, [fetchPostsData, posts, match]);
   return <Channel posts={posts} match={match} />;
 };
 
-const mapStateToProps = (state) => ({
-  posts: getPostsData(state),
+const mapStateToProps = (state, props) => ({
+  posts: getPostsData(state, props.match.params.id),
 });
 
-const mapDispatchToProps = {
-  fetchPostsData: fetchPosts,
-};
+const mapDispatchToProps = (dispatch, props) => ({
+  fetchPostsData: () => dispatch(fetchPosts(props.match.params.id)),
+});
 
 ChannelPageContainer.propTypes = {
   fetchPostsData: PropTypes.func.isRequired,
