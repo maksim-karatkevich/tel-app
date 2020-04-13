@@ -13,7 +13,7 @@ export const getPosts = (posts) => ({
 
 export function fetchChannels() {
   return async (dispatch, getState) => {
-    const channelsExists = getState().channelsState.channels.length > 0;
+    const channelsExists = getState().channelsState.length > 0;
 
     if (!channelsExists) {
       requestChannels().then((result) => {
@@ -25,7 +25,7 @@ export function fetchChannels() {
 
 export function fetchPosts(id) {
   return async (dispatch, getState) => {
-    const postsExists = !!getState().postsState.channels.find(
+    const postsExists = !!getState().postsState.find(
       (channel) => channel.channelId === id
     );
 

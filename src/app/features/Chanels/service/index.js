@@ -1,14 +1,20 @@
 import { channelsMockData, postsMockData } from '../../../utils/mockData';
 
 const requestChannels = async () => {
-  // eslint-disable-next-line no-return-await
-  return await channelsMockData;
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(channelsMockData);
+    }, 300);
+  });
 };
 
 const requestPosts = async (id) => {
-  console.log(id);
-  // eslint-disable-next-line no-return-await
-  return await postsMockData;
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      console.log(id);
+      resolve(postsMockData);
+    }, 300);
+  });
 };
 
 export { requestChannels, requestPosts };

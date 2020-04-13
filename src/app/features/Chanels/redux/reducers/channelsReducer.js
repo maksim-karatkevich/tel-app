@@ -1,16 +1,10 @@
 import { GET_CHANNELS } from '../actionsTypes';
 
-const initialState = {
-  channels: [],
-};
-
+const initialState = [];
 const channelsState = (state = initialState, action) => {
   switch (action.type) {
     case GET_CHANNELS: {
-      return {
-        ...state,
-        channels: action.payload,
-      };
+      return action.payload;
     }
     default:
       return state;

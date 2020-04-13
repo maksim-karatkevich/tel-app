@@ -12,7 +12,7 @@ const ChannelsListContainer = ({ fetchData, channels }) => {
 
   useEffect(() => {
     fetchData();
-  }, [fetchData, channels]);
+  }, [fetchData]);
 
   return (
     <div className="m-4">

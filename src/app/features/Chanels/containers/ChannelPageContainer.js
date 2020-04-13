@@ -8,7 +8,7 @@ import Channel from '../components/Channel';
 const ChannelPageContainer = ({ fetchPostsData, posts, match }) => {
   useEffect(() => {
     fetchPostsData(match.params.id);
-  }, [fetchPostsData, posts, match]);
+  }, [fetchPostsData, match]);
   return <Channel posts={posts} match={match} />;
 };
 
