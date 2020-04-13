@@ -1,12 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import PropTypes, { arrayOf, object } from 'prop-types';
 import { withRouter } from 'react-router';
 import { Card, Col, Row } from 'antd';
 import Avatar from 'antd/lib/avatar';
-import { posts } from '../../utils/mockData';
 import Post from './Post';
 
-const Channel = ({ match }) => {
+const Channel = ({ posts, match }) => {
   return (
     <div className="mt-3">
       <Row justify="center" align="middle">
@@ -32,6 +31,7 @@ const Channel = ({ match }) => {
 };
 
 Channel.propTypes = {
+  posts: arrayOf(object).isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.string,

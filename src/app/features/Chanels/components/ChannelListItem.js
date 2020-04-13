@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Avatar from 'antd/lib/avatar';
 
-const ChannelItem = ({ name, src }) => {
+const ChannelListItem = ({ name, src }) => {
   return (
     <div className="p-3">
       <Avatar size={256} src={src} />
@@ -11,12 +11,12 @@ const ChannelItem = ({ name, src }) => {
   );
 };
 
-ChannelItem.defaultProps = {
+ChannelListItem.defaultProps = {
   src: '',
 };
 
-ChannelItem.propTypes = {
+ChannelListItem.propTypes = {
   name: PropTypes.string.isRequired,
   src: PropTypes.string,
 };
-export default ChannelItem;
+export default ChannelListItem;

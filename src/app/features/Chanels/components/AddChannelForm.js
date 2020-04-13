@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Input, Button } from 'antd';
+import { Button, Input } from 'antd';
 
 const AddChannelForm = () => {
   return (
