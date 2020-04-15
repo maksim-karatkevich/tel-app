@@ -1,0 +1,14 @@
+.alert-container {
+  position: fixed;
+  top: 0.5rem;
+  left: 50rem;
+  width: 40em;
+  text-align: center;
+  z-index: 1;
+}
+
+.alert-container > * {
+  margin-top: 1rem;
+  position: relative;
+  left: -50%;
+}

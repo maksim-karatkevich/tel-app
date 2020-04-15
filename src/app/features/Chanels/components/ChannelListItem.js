@@ -1,10 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Avatar from 'antd/lib/avatar';
+import { Button } from 'antd';
+import { CloseOutlined } from '@ant-design/icons';
 
-const ChannelListItem = ({ name, src }) => {
+const ChannelListItem = ({ name, src, onRemoveChannel }) => {
+  const [hidden, setHidden] = useState(false);
+
   return (
-    <div className="p-3">
+    <div
+      className="p-3"
+      onMouseEnter={() => setHidden(true)}
+      onMouseLeave={() => setHidden(false)}
+    >
+      {hidden && (
+        <Button
+          type="link"
+          className="position-absolute"
+          onClick={(e) => onRemoveChannel(e, name)}
+          icon={<CloseOutlined />}
+          size="small"
+          danger
+        />
+      )}
       <Avatar size={256} src={src} />
       <div className="text-center">{name}</div>
     </div>
@@ -18,5 +36,6 @@ ChannelListItem.defaultProps = {
 ChannelListItem.propTypes = {
   name: PropTypes.string.isRequired,
   src: PropTypes.string,
+  onRemoveChannel: PropTypes.func.isRequired,
 };
 export default ChannelListItem;

@@ -8,6 +8,18 @@ const requestChannels = async () => {
   });
 };
 
+const requestChannel = async (channelName) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({
+        id: `${channelName} - ${Math.random() * Math.floor(99999)}`,
+        name: channelName,
+        img: 'http://i.pravatar.cc/300',
+      });
+    }, 300);
+  });
+};
+
 const requestPosts = async (id) => {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -17,4 +29,4 @@ const requestPosts = async (id) => {
   });
 };
 
-export { requestChannels, requestPosts };
+export { requestChannels, requestPosts, requestChannel };
