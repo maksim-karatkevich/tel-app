@@ -4,14 +4,22 @@ import { Link } from 'react-router-dom';
 import PropTypes, { arrayOf, object } from 'prop-types';
 import ChannelListItem from './ChannelListItem';
 
-const ChannelsList = ({ channels, url }) => {
+const ChannelsList = ({ channels, url, onRemoveChannel }) => {
   return (
-    <Row>
+    <Row className="mt-3">
       {channels.map((item, index) => {
         return (
-          <Link key={`${item.name}`} to={`${url}/${index}`} name={item.name}>
+          <Link
+            key={`${item.name} - ${Math.random() * Math.floor(99999)}`}
+            to={`${url}/${index}`}
+            name={item.name}
+          >
             <Col>
-              <ChannelListItem name={item.name} src={item.img} />
+              <ChannelListItem
+                onRemoveChannel={onRemoveChannel}
+                name={item.name}
+                src={item.img}
+              />
             </Col>
           </Link>
         );
@@ -27,6 +35,7 @@ ChannelsList.defaultProps = {
 ChannelsList.propTypes = {
   channels: arrayOf(object),
   url: PropTypes.string.isRequired,
+  onRemoveChannel: PropTypes.func.isRequired,
 };
 
 export default ChannelsList;

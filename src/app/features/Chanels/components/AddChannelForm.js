@@ -1,14 +1,43 @@
 import React from 'react';
+import { Button, Form, Input } from 'antd';
+import PropTypes from 'prop-types';
 
-import { Button, Input } from 'antd';
+const AddChannelForm = ({ onSubmitForm }) => {
+  const [form] = Form.useForm();
 
-const AddChannelForm = () => {
   return (
-    <div className="mt-5 mb-5">
-      <Input className="w-25" maxLength={25} placeholder="Channel name" />
-      <Button type="primary">Add Channel</Button>
-    </div>
+    <Form form={form} layout="inline" onFinish={onSubmitForm}>
+      <Form.Item
+        name="channelName"
+        rules={[
+          {
+            required: true,
+            message: 'Channel name is required!',
+          },
+        ]}
+      >
+        <Input maxLength={25} placeholder="Channel name" />
+      </Form.Item>
+      <Form.Item shouldUpdate>
+        {() => (
+          <Button
+            type="primary"
+            htmlType="submit"
+            disabled={
+              !form.isFieldsTouched(true) ||
+              form.getFieldsError().filter(({ errors }) => errors.length).length
+            }
+          >
+            Submit
+          </Button>
+        )}
+      </Form.Item>
+    </Form>
   );
+};
+
+AddChannelForm.propTypes = {
+  onSubmitForm: PropTypes.func.isRequired,
 };
 
 export default AddChannelForm;

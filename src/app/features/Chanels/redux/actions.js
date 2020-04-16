@@ -1,12 +1,18 @@
-import { GET_CHANNELS, GET_POSTS } from './actionsTypes';
-import { requestChannels, requestPosts } from '../service';
+import { GET_CHANNELS, GET_POSTS, ADD_CHANNEL } from './actionsTypes';
+import { createChannel, requestChannels, requestPosts } from '../service';
+import { showErrorAlert, showSuccessAlert } from '../../../redux/alertAction';
 
-export const getChannels = (channels) => ({
+export const addChannelAction = (channelName) => ({
+  type: ADD_CHANNEL,
+  payload: channelName,
+});
+
+export const getChannelsAction = (channels) => ({
   type: GET_CHANNELS,
   payload: channels,
 });
 
-export const getPosts = (posts) => ({
+export const getPostsAction = (posts) => ({
   type: GET_POSTS,
   payload: posts,
 });
@@ -14,11 +20,9 @@ export const getPosts = (posts) => ({
 export function fetchChannels() {
   return async (dispatch, getState) => {
     const channelsExists = getState().channelsState.length > 0;
-
     if (!channelsExists) {
-      requestChannels().then((result) => {
-        dispatch(getChannels(result));
-      });
+      const channels = await requestChannels();
+      dispatch(getChannelsAction(channels));
     }
   };
 }
@@ -31,11 +35,38 @@ export function fetchPosts(id) {
 
     if (!postsExists) {
       requestPosts(id).then((result) => {
-        const postItem = result.find((item) => item.channelId === id);
-        if (postItem) {
-          dispatch(getPosts(postItem));
+        if (result) {
+          dispatch(getPostsAction(result));
         }
       });
     }
+  };
+}
+
+export function addChannel(channelName) {
+  return async (dispatch, getState) => {
+    const channelExists = getState().channelsState.find(
+      (channel) => channel.name === channelName
+    );
+
+    if (!channelExists) {
+      createChannel(channelName).then((result) => {
+        dispatch(addChannelAction(result));
+        dispatch(showSuccessAlert(`Channel ${channelName} added!`));
+      });
+    } else {
+      dispatch(showErrorAlert(`Channel ${channelName} exists!`));
+    }
+  };
+}
+
+export function removeChannel(channelName) {
+  return async (dispatch, getState) => {
+    const newChannelsState = getState().channelsState.filter(
+      (channel) => channel.name !== channelName
+    );
+    dispatch(getChannelsAction(newChannelsState));
+    dispatch(showSuccessAlert(`Channel ${channelName} removed!`));
+    localStorage.setItem('channelsList', JSON.stringify(newChannelsState));
   };
 }
