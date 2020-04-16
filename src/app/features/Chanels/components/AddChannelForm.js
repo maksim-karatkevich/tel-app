@@ -1,15 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Button, Form, Input } from 'antd';
 import PropTypes from 'prop-types';
 
 const AddChannelForm = ({ onSubmitForm }) => {
   const [form] = Form.useForm();
-  const [, forceUpdate] = useState();
-
-  // To disable submit button at the beginning.
-  useEffect(() => {
-    forceUpdate({});
-  }, []);
 
   return (
     <Form form={form} layout="inline" onFinish={onSubmitForm}>

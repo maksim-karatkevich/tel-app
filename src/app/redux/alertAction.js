@@ -1,22 +1,22 @@
-import { SHOW_ALERT } from '../features/Chanels/redux/actionsTypes';
+import {
+  SHOW_ALERT,
+  RESET_ALERT_STATE,
+} from '../features/Chanels/redux/actionsTypes';
 
 export const showAlertAction = (alert) => ({
   type: SHOW_ALERT,
   payload: alert,
 });
 
+export const resetAlertAction = () => ({
+  type: RESET_ALERT_STATE,
+});
+
 function showAlert(alertState) {
   return async (dispatch) => {
     dispatch(showAlertAction(alertState));
     setTimeout(() => {
-      dispatch(
-        showAlertAction({
-          showSuccess: false,
-          successMessage: '',
-          showError: false,
-          errorMessage: '',
-        })
-      );
+      dispatch(resetAlertAction());
     }, 3000);
   };
 }

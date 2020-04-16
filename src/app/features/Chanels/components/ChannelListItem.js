@@ -5,15 +5,15 @@ import { Button } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 
 const ChannelListItem = ({ name, src, onRemoveChannel }) => {
-  const [hidden, setHidden] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   return (
     <div
       className="p-3"
-      onMouseEnter={() => setHidden(true)}
-      onMouseLeave={() => setHidden(false)}
+      onMouseEnter={() => setVisible(true)}
+      onMouseLeave={() => setVisible(false)}
     >
-      {hidden && (
+      {visible && (
         <Button
           type="link"
           className="position-absolute"
