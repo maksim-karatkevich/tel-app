@@ -5,4 +5,3 @@ export const getPostsData = (store, id) => {
   );
   return channelItem ? channelItem.posts : [];
 };
-export const getAlertState = (store) => store.alertState;

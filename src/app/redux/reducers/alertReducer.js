@@ -1,7 +1,4 @@
-import {
-  RESET_ALERT_STATE,
-  SHOW_ALERT,
-} from '../../features/Chanels/redux/actionsTypes';
+import { RESET_ALERT_STATE, SHOW_ALERT } from '../actionTypes';
 
 const initialState = {
   showSuccess: false,
