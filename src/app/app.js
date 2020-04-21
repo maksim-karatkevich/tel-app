@@ -12,9 +12,8 @@ import { getAuthorizedState } from './redux/selector';
 import { initAuthorizeState } from './redux/authorizationAction';
 
 const App = ({ authorized, dispatchAuthorizeState }) => {
-  controller.init();
-
   useEffect(() => {
+    controller.init();
     dispatchAuthorizeState();
   }, [dispatchAuthorizeState]);
 

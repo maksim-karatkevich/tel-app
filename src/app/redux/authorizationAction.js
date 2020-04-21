@@ -21,17 +21,38 @@ export const setAuthorizedStateAction = (isAuthorized) => ({
   payload: isAuthorized,
 });
 
-export function initAuthorizeState() {
+export function sentTdParams() {
   return async (dispatch) => {
-    const isAuthorized = localStorage.getItem('authorized');
-    if (isAuthorized) {
-      dispatch(setAuthorizedStateAction(true));
-    }
+    controller.sendTdParameters().then((result) => {
+      dispatch(sendTdParamsAction(result));
+    });
+    controller.send({ '@type': 'checkDatabaseEncryptionKey' });
+  };
+}
+
+export function initAuthorizeState() {
+  return (dispatch) => {
+    dispatch(sentTdParams());
+
+    controller.send({ '@type': 'getAuthorizationState' }).then((state) => {
+      switch (state['@type']) {
+        case 'authorizationStateReady':
+          dispatch(setAuthorizedStateAction(true));
+          break;
+        case 'authorizationStateWaitPhoneNumber':
+        case 'authorizationStateWaitCode':
+          dispatch(setAuthorizedStateAction(false));
+          break;
+        default:
+          break;
+      }
+    });
   };
 }
 
 export function sendPhoneNumber(phoneNumber) {
-  return async (dispatch) => {
+  return (dispatch) => {
+    dispatch(sendPhoneAction({ phoneNumber, step: '2' }));
     controller
       .send({
         '@type': 'setAuthenticationPhoneNumber',
@@ -48,6 +69,9 @@ export function sendPhoneNumber(phoneNumber) {
 
 export function sendCode(code) {
   return async (dispatch) => {
+    localStorage.setItem('authorized', 'true');
+    dispatch(setAuthorizedStateAction(true));
+
     controller
       .send({
         '@type': 'checkAuthenticationCode',
@@ -62,14 +86,5 @@ export function sendCode(code) {
       .catch((error) => {
         dispatch(showErrorAlert(error.message));
       });
-  };
-}
-
-export function sentTdParams() {
-  return async (dispatch) => {
-    controller.sendTdParameters().then((result) => {
-      controller.send({ '@type': 'checkDatabaseEncryptionKey' });
-      dispatch(sendTdParamsAction(result));
-    });
   };
 }

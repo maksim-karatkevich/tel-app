@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Col, Row } from 'antd';
+import { useHistory, useLocation } from 'react-router';
 import PhoneStep from './PhoneStep';
 import CodeStep from './CodeStep';
 import {
@@ -9,14 +10,20 @@ import {
   sentTdParams,
   sendCode,
 } from '../redux/authorizationAction';
-import { getStep } from '../redux/selector';
+import { getAuthorizedState, getStep } from '../redux/selector';
 import './logInPage.css';
 import Logo from './logo.ico';
 
-const LogInPage = ({ sendPhoneData, sendCodeData, sentTdParamsData, step }) => {
+const LogInPage = ({ sendPhoneData, sendCodeData, step, authorized }) => {
+  const history = useHistory();
+  const location = useLocation();
+  const { from } = location.state || { from: { pathname: '/' } };
+
   useEffect(() => {
-    sentTdParamsData();
-  }, [sentTdParamsData]);
+    if (authorized) {
+      history.replace(from);
+    }
+  }, [from, history, authorized]);
 
   const submitPhone = ({ phoneNumber }) => {
     sendPhoneData(phoneNumber);
@@ -24,6 +31,7 @@ const LogInPage = ({ sendPhoneData, sendCodeData, sentTdParamsData, step }) => {
 
   const submitCode = ({ code }) => {
     sendCodeData(code);
+    history.replace(from);
   };
 
   return (
@@ -57,8 +65,8 @@ const LogInPage = ({ sendPhoneData, sendCodeData, sentTdParamsData, step }) => {
 LogInPage.propTypes = {
   sendPhoneData: PropTypes.func.isRequired,
   sendCodeData: PropTypes.func.isRequired,
-  sentTdParamsData: PropTypes.func.isRequired,
   step: PropTypes.string.isRequired,
+  authorized: PropTypes.bool.isRequired,
 };
 
 const mapDispatchToProps = {
@@ -69,6 +77,7 @@ const mapDispatchToProps = {
 
 const mapStateToProps = (state) => ({
   step: getStep(state),
+  authorized: getAuthorizedState(state),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LogInPage);
