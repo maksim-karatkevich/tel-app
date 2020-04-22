@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Col, Row } from 'antd';
+import { Col, Row, Spin } from 'antd';
 import { useHistory, useLocation } from 'react-router';
 import PhoneStep from './PhoneStep';
 import CodeStep from './CodeStep';
@@ -10,11 +10,22 @@ import {
   sentTdParams,
   sendCode,
 } from '../redux/authorizationAction';
-import { getAuthorizedState, getStep } from '../redux/selector';
+import {
+  getAuthorizedState,
+  getStep,
+  getSpinnerState,
+} from '../redux/selector';
 import './logInPage.css';
 import Logo from './logo.ico';
+import './login.css';
 
-const LogInPage = ({ sendPhoneData, sendCodeData, step, authorized }) => {
+const LogInPage = ({
+  sendPhoneData,
+  sendCodeData,
+  step,
+  authorized,
+  spinnerState,
+}) => {
   const history = useHistory();
   const location = useLocation();
   const { from } = location.state || { from: { pathname: '/' } };
@@ -34,7 +45,7 @@ const LogInPage = ({ sendPhoneData, sendCodeData, step, authorized }) => {
     history.replace(from);
   };
 
-  return (
+  return !spinnerState ? (
     <Row justify="space-around" align="middle">
       <Col>
         <div className="auth-form">
@@ -59,6 +70,10 @@ const LogInPage = ({ sendPhoneData, sendCodeData, step, authorized }) => {
         </div>
       </Col>
     </Row>
+  ) : (
+    <div className="spinner">
+      <Spin size="large" />
+    </div>
   );
 };
 
@@ -67,6 +82,7 @@ LogInPage.propTypes = {
   sendCodeData: PropTypes.func.isRequired,
   step: PropTypes.string.isRequired,
   authorized: PropTypes.bool.isRequired,
+  spinnerState: PropTypes.bool.isRequired,
 };
 
 const mapDispatchToProps = {
@@ -78,6 +94,7 @@ const mapDispatchToProps = {
 const mapStateToProps = (state) => ({
   step: getStep(state),
   authorized: getAuthorizedState(state),
+  spinnerState: getSpinnerState(state),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LogInPage);

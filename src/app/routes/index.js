@@ -17,9 +17,11 @@ const RoutesResolver = ({ authorized }) => {
       <PrivateRoute exact path="/channels" authorized={authorized}>
         <ChannelsListContainer />
       </PrivateRoute>
-      <PrivateRoute path="/channels/:id" authorized={authorized}>
-        <ChannelPageContainer />
-      </PrivateRoute>
+      <PrivateRoute
+        path="/channels/:id"
+        authorized={authorized}
+        render={(props) => <ChannelPageContainer {...props} />}
+      />
       <Route path="/login" component={LogInPage} />
     </Switch>
   );

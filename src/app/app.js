@@ -19,7 +19,7 @@ const App = ({ authorized, dispatchAuthorizeState }) => {
 
   return (
     <Router>
-      {authorized && <Header />}
+      {authorized ? <Header /> : null}
       <RoutesResolver authorized={authorized} />
     </Router>
   );

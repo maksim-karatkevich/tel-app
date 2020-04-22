@@ -3,6 +3,7 @@ import {
   SEND_PHONE,
   SEND_TD_PARAMS,
   SET_AUTHORIZED_STATE,
+  SHOW_SPINNER,
 } from './actionTypes';
 import { showErrorAlert } from './alertActions';
 
@@ -21,6 +22,11 @@ export const setAuthorizedStateAction = (isAuthorized) => ({
   payload: isAuthorized,
 });
 
+export const showSpinnerAction = (show) => ({
+  type: SHOW_SPINNER,
+  payload: show,
+});
+
 export function sentTdParams() {
   return async (dispatch) => {
     controller.sendTdParameters().then((result) => {
@@ -30,20 +36,29 @@ export function sentTdParams() {
   };
 }
 
+export function showSpinner(show) {
+  return async (dispatch) => {
+    dispatch(showSpinnerAction(show));
+  };
+}
+
 export function initAuthorizeState() {
   return (dispatch) => {
     dispatch(sentTdParams());
-
+    dispatch(showSpinner(true));
     controller.send({ '@type': 'getAuthorizationState' }).then((state) => {
       switch (state['@type']) {
         case 'authorizationStateReady':
           dispatch(setAuthorizedStateAction(true));
+          dispatch(showSpinner(false));
           break;
         case 'authorizationStateWaitPhoneNumber':
         case 'authorizationStateWaitCode':
           dispatch(setAuthorizedStateAction(false));
+          dispatch(showSpinner(false));
           break;
         default:
+          dispatch(showSpinner(false));
           break;
       }
     });
@@ -69,9 +84,6 @@ export function sendPhoneNumber(phoneNumber) {
 
 export function sendCode(code) {
   return async (dispatch) => {
-    localStorage.setItem('authorized', 'true');
-    dispatch(setAuthorizedStateAction(true));
-
     controller
       .send({
         '@type': 'checkAuthenticationCode',
@@ -85,6 +97,7 @@ export function sendCode(code) {
       })
       .catch((error) => {
         dispatch(showErrorAlert(error.message));
+        dispatch(setAuthorizedStateAction(false));
       });
   };
 }
