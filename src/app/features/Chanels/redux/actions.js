@@ -1,5 +1,16 @@
-import { GET_CHANNELS, GET_POSTS, ADD_CHANNEL } from './actionsTypes';
-import { createChannel, requestChannels, requestPosts } from '../service';
+import {
+  GET_CHANNELS,
+  GET_POSTS,
+  ADD_CHANNEL,
+  GET_AVATARS,
+} from './actionsTypes';
+import {
+  createChannel,
+  downloadChatAvatar,
+  getChannelAvatars,
+  getChats,
+  requestPosts,
+} from '../service';
 import { showErrorAlert, showSuccessAlert } from '../../../redux/alertActions';
 
 export const addChannelAction = (channelName) => ({
@@ -12,18 +23,34 @@ export const getChannelsAction = (channels) => ({
   payload: channels,
 });
 
+export const getAvatarAction = (files) => ({
+  type: GET_AVATARS,
+  payload: files,
+});
+
 export const getPostsAction = (posts) => ({
   type: GET_POSTS,
   payload: posts,
 });
 
+export function requestPhotos(channels) {
+  return async (dispatch) => {
+    getChannelAvatars(channels).then((res) => {
+      dispatch(getAvatarAction(res));
+    });
+  };
+}
+
 export function fetchChannels() {
-  return async (dispatch, getState) => {
-    const channelsExists = getState().channelsState.length > 0;
-    if (!channelsExists) {
-      const channels = await requestChannels();
-      dispatch(getChannelsAction(channels));
-    }
+  return async (dispatch) => {
+    getChats().then((channels) => {
+      downloadChatAvatar(channels.filter((channel) => channel.photo)).then(
+        (files) => {
+          dispatch(requestPhotos(files));
+          dispatch(getChannelsAction(channels));
+        }
+      );
+    });
   };
 }
 

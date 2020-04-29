@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes, { arrayOf, object } from 'prop-types';
 import AddChannelForm from '../components/AddChannelForm';
 import ChannelsList from '../components/ChannelsList';
-import { getChannelsData } from '../redux/selector';
+import { getChannelsData, getAvatarData } from '../redux/selector';
 import { addChannel, fetchChannels, removeChannel } from '../redux/actions';
 
 const ChannelsListContainer = ({
@@ -12,6 +12,7 @@ const ChannelsListContainer = ({
   addChannelData,
   removeChannelData,
   channels,
+  avatars,
 }) => {
   const { url } = useRouteMatch();
 
@@ -35,6 +36,7 @@ const ChannelsListContainer = ({
         onRemoveChannel={handleRemove}
         channels={channels}
         url={url}
+        avatars={avatars}
       />
     </div>
   );
@@ -42,6 +44,7 @@ const ChannelsListContainer = ({
 
 const mapStateToProps = (state) => ({
   channels: getChannelsData(state),
+  avatars: getAvatarData(state),
 });
 
 const mapDispatchToProps = {
@@ -52,6 +55,7 @@ const mapDispatchToProps = {
 
 ChannelsListContainer.defaultProps = {
   channels: [],
+  avatars: {},
 };
 
 ChannelsListContainer.propTypes = {
@@ -59,6 +63,9 @@ ChannelsListContainer.propTypes = {
   addChannelData: PropTypes.func.isRequired,
   removeChannelData: PropTypes.func.isRequired,
   channels: arrayOf(object),
+  avatars: PropTypes.shape({
+    id: PropTypes.string,
+  }),
 };
 
 export default connect(
