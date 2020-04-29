@@ -1,6 +1,6 @@
 import { GET_CHANNELS, GET_POSTS, ADD_CHANNEL } from './actionsTypes';
 import { createChannel, requestChannels, requestPosts } from '../service';
-import { showErrorAlert, showSuccessAlert } from '../../../redux/alertAction';
+import { showErrorAlert, showSuccessAlert } from '../../../redux/alertActions';
 
 export const addChannelAction = (channelName) => ({
   type: ADD_CHANNEL,

@@ -1,0 +1,6 @@
+export const SHOW_ALERT = 'SHOW_ALERT';
+export const RESET_ALERT_STATE = 'RESET_ALERT_STATE';
+export const SEND_PHONE = 'SEND_PHONE';
+export const SEND_TD_PARAMS = 'SEND_TD_PARAMS';
+export const SET_AUTHORIZED_STATE = 'SET_AUTHORIZED_STATE';
+export const SHOW_SPINNER = 'SHOW_SPINNER';

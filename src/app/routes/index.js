@@ -1,16 +1,34 @@
-import { Route, Switch } from 'react-router-dom';
 import React from 'react';
+import { Route, Switch } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import ChannelsListContainer from '../features/Chanels/containers/ChannelsListContainer';
-import ChannelPageContainer from '../features/Chanels/containers/ChannelPageContainer';
 import 'antd/dist/antd.css';
+import LogInPage from '../components/LologInPage';
+import PrivateRoute from './PrivateRoute';
+import ChannelPageContainer from '../features/Chanels/containers/ChannelPageContainer';
+import Home from '../common/components/Home';
 
-const RoutesResolver = () => {
+const RoutesResolver = ({ authorized }) => {
   return (
     <Switch>
-      <Route exact path="/channels" component={ChannelsListContainer} />
-      <Route path="/channels/:id" component={ChannelPageContainer} />
+      <PrivateRoute exact path="/" authorized={authorized}>
+        <Home />
+      </PrivateRoute>
+      <PrivateRoute exact path="/channels" authorized={authorized}>
+        <ChannelsListContainer />
+      </PrivateRoute>
+      <PrivateRoute
+        path="/channels/:id"
+        authorized={authorized}
+        render={(props) => <ChannelPageContainer {...props} />}
+      />
+      <Route path="/login" component={LogInPage} />
     </Switch>
   );
+};
+
+RoutesResolver.propTypes = {
+  authorized: PropTypes.bool.isRequired,
 };
 
 export default RoutesResolver;
