@@ -1,16 +1,15 @@
-import { GET_AVATARS } from '../actionsTypes';
+import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = {};
-const filesState = (state = initialState, action) => {
-  switch (action.type) {
-    case GET_AVATARS: {
+const fileSlice = createSlice({
+  name: 'files',
+  initialState: {},
+  reducers: {
+    GET_AVATARS: (state, action) => {
       return action.payload.reduce((acc, img) => {
         return { ...acc, [img.id]: img.avatar };
       }, {});
-    }
-    default:
-      return state;
-  }
-};
+    },
+  },
+});
 
-export default filesState;
+export default fileSlice;

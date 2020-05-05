@@ -1,10 +1,4 @@
 import {
-  GET_CHANNELS,
-  GET_POSTS,
-  ADD_CHANNEL,
-  GET_AVATARS,
-} from './actionsTypes';
-import {
   createChannel,
   downloadChatAvatars,
   getChannelAvatars,
@@ -13,32 +7,15 @@ import {
   requestPosts,
 } from '../service';
 import { showErrorAlert, showSuccessAlert } from '../../../redux/alertActions';
-
-export const addChannelAction = (channelName) => ({
-  type: ADD_CHANNEL,
-  payload: channelName,
-});
-
-export const getChannelsAction = (channels) => ({
-  type: GET_CHANNELS,
-  payload: channels,
-});
-
-export const getAvatarAction = (files) => ({
-  type: GET_AVATARS,
-  payload: files,
-});
-
-export const getPostsAction = (posts) => ({
-  type: GET_POSTS,
-  payload: posts,
-});
+import channelsSlice from './reducers/channelsReducer';
+import fileSlice from './reducers/filesReducer';
+import postsSlice from './reducers/postsReducer';
 
 export function requestPhotos(channels) {
   return async (dispatch) => {
     const photos = await getChannelAvatars(channels);
 
-    dispatch(getAvatarAction(photos));
+    dispatch(fileSlice.actions.GET_AVATARS(photos));
   };
 }
 
@@ -49,7 +26,7 @@ export function fetchChannels() {
     const files = await downloadChatAvatars(
       channels.filter((channel) => channel.photo)
     );
-    dispatch(getChannelsAction(channels));
+    dispatch(channelsSlice.actions.GET_CHANNELS(channels));
     dispatch(requestPhotos(files));
   };
 }
@@ -63,7 +40,7 @@ export function fetchPosts(id) {
     if (!postsExists) {
       const result = await requestPosts(id);
       if (result) {
-        dispatch(getPostsAction(result));
+        dispatch(postsSlice.actions.GET_POSTS(result));
       }
     }
   };
@@ -78,7 +55,7 @@ export function addChannel(channelName) {
     if (!channelExists) {
       const channel = await createChannel(channelName);
 
-      dispatch(addChannelAction(channel));
+      dispatch(channelsSlice.actions.ADD_CHANNEL(channel));
       dispatch(showSuccessAlert(`Channel ${channelName} added!`));
     } else {
       dispatch(showErrorAlert(`Channel ${channelName} exists!`));
@@ -91,7 +68,7 @@ export function removeChannel(channelName) {
     const newChannelsState = getState().channelsState.filter(
       (channel) => channel.name !== channelName
     );
-    dispatch(getChannelsAction(newChannelsState));
+    dispatch(channelsSlice.actions.ADD_CHANNEL(newChannelsState));
     dispatch(showSuccessAlert(`Channel ${channelName} removed!`));
     localStorage.setItem('channelsList', JSON.stringify(newChannelsState));
   };

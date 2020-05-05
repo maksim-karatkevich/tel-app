@@ -1,19 +1,9 @@
-import { RESET_ALERT_STATE, SHOW_ALERT } from './actionTypes';
+import alertSlice from './reducers/alertReducer';
 
-export const showAlertAction = (alert) => ({
-  type: SHOW_ALERT,
-  payload: alert,
-});
-
-export const resetAlertAction = () => ({
-  type: RESET_ALERT_STATE,
-});
-
-function showAlert(alertState) {
+function resetAlertState() {
   return async (dispatch) => {
-    dispatch(showAlertAction(alertState));
     setTimeout(() => {
-      dispatch(resetAlertAction());
+      dispatch(alertSlice.actions.RESET_ALERT_STATE());
     }, 3000);
   };
 }
@@ -21,21 +11,23 @@ function showAlert(alertState) {
 export function showSuccessAlert(message) {
   return async (dispatch) => {
     dispatch(
-      showAlert({
+      alertSlice.actions.SHOW_ALERT({
         successMessage: message,
         showSuccess: true,
       })
     );
+    dispatch(resetAlertState());
   };
 }
 
 export function showErrorAlert(message) {
   return async (dispatch) => {
     dispatch(
-      showAlert({
+      alertSlice.actions.SHOW_ALERT({
         errorMessage: message,
         showError: true,
       })
     );
+    dispatch(resetAlertState());
   };
 }

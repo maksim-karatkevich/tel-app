@@ -1,9 +1,4 @@
-import {
-  SET_AUTHORIZED_STATE,
-  SEND_PHONE,
-  SEND_TD_PARAMS,
-  SHOW_SPINNER,
-} from '../actionTypes';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   authorized: false,
@@ -13,23 +8,23 @@ const initialState = {
   tdParams: '',
 };
 
-const authorizationState = (state = initialState, action) => {
-  switch (action.type) {
-    case SEND_TD_PARAMS: {
+const authorizationSlice = createSlice({
+  name: 'authorization',
+  initialState,
+  reducers: {
+    SEND_TD_PARAMS: (state, action) => {
       return { ...state, tdParams: action.payload };
-    }
-    case SEND_PHONE: {
+    },
+    SEND_PHONE: (state, action) => {
       return { ...state, ...action.payload };
-    }
-    case SET_AUTHORIZED_STATE: {
+    },
+    SET_AUTHORIZED_STATE: (state, action) => {
       return { ...state, authorized: action.payload };
-    }
-    case SHOW_SPINNER: {
+    },
+    SHOW_SPINNER: (state, action) => {
       return { ...state, showSpinner: action.payload };
-    }
-    default:
-      return state;
-  }
-};
+    },
+  },
+});
 
-export default authorizationState;
+export default authorizationSlice;

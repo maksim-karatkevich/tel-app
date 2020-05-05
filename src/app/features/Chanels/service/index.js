@@ -66,18 +66,11 @@ const downloadChatAvatars = async (channels) => {
 
 const createChannel = async (channelName) => {
   setTimeout(() => {
-    const result = {
+    return {
       id: `${channelName} - ${Math.random() * Math.floor(99999)}`,
       name: channelName,
       img: 'http://i.pravatar.cc/300',
     };
-    const updatedChannelsList = [
-      ...JSON.parse(localStorage.getItem('channelsList')),
-      result,
-    ];
-    localStorage.setItem('channelsList', JSON.stringify(updatedChannelsList));
-
-    return result;
   }, 300);
 };
 

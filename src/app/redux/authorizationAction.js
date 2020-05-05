@@ -1,36 +1,11 @@
 import controller from '../controller/TelegramController';
-import {
-  SEND_PHONE,
-  SEND_TD_PARAMS,
-  SET_AUTHORIZED_STATE,
-  SHOW_SPINNER,
-} from './actionTypes';
 import { showErrorAlert } from './alertActions';
-
-export const sendPhoneAction = (phoneNumber) => ({
-  type: SEND_PHONE,
-  payload: phoneNumber,
-});
-
-export const sendTdParamsAction = (tdParams) => ({
-  type: SEND_TD_PARAMS,
-  params: tdParams,
-});
-
-export const setAuthorizedStateAction = (isAuthorized) => ({
-  type: SET_AUTHORIZED_STATE,
-  payload: isAuthorized,
-});
-
-export const showSpinnerAction = (show) => ({
-  type: SHOW_SPINNER,
-  payload: show,
-});
+import authorizationSlice from './reducers/authorizationReducer';
 
 export function sentTdParams() {
   return async (dispatch) => {
     controller.sendTdParameters().then((result) => {
-      dispatch(sendTdParamsAction(result));
+      dispatch(authorizationSlice.actions.SEND_TD_PARAMS(result));
     });
     controller.send({ '@type': 'checkDatabaseEncryptionKey' });
   };
@@ -38,7 +13,7 @@ export function sentTdParams() {
 
 export function showSpinner(show) {
   return async (dispatch) => {
-    dispatch(showSpinnerAction(show));
+    dispatch(authorizationSlice.actions.SHOW_SPINNER(show));
   };
 }
 
@@ -49,12 +24,12 @@ export function initAuthorizeState() {
     controller.send({ '@type': 'getAuthorizationState' }).then((state) => {
       switch (state['@type']) {
         case 'authorizationStateReady':
-          dispatch(setAuthorizedStateAction(true));
+          dispatch(authorizationSlice.actions.SET_AUTHORIZED_STATE(true));
           dispatch(showSpinner(false));
           break;
         case 'authorizationStateWaitPhoneNumber':
         case 'authorizationStateWaitCode':
-          dispatch(setAuthorizedStateAction(false));
+          dispatch(authorizationSlice.actions.SET_AUTHORIZED_STATE(false));
           dispatch(showSpinner(false));
           break;
         default:
@@ -67,14 +42,16 @@ export function initAuthorizeState() {
 
 export function sendPhoneNumber(phoneNumber) {
   return (dispatch) => {
-    dispatch(sendPhoneAction({ phoneNumber, step: '2' }));
+    dispatch(authorizationSlice.actions.SEND_PHONE({ phoneNumber, step: '2' }));
     controller
       .send({
         '@type': 'setAuthenticationPhoneNumber',
         phone_number: phoneNumber,
       })
       .then(() => {
-        dispatch(sendPhoneAction({ phoneNumber, step: '2' }));
+        dispatch(
+          authorizationSlice.actions.SEND_PHONE({ phoneNumber, step: '2' })
+        );
       })
       .catch((error) => {
         dispatch(showErrorAlert(error.message));
@@ -93,11 +70,11 @@ export function sendCode(code) {
       })
       .then(() => {
         localStorage.setItem('authorized', 'true');
-        dispatch(setAuthorizedStateAction(true));
+        dispatch(authorizationSlice.actions.SET_AUTHORIZED_STATE(true));
       })
       .catch((error) => {
         dispatch(showErrorAlert(error.message));
-        dispatch(setAuthorizedStateAction(false));
+        dispatch(authorizationSlice.actions.SET_AUTHORIZED_STATE(false));
       });
   };
 }
