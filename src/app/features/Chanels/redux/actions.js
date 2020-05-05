@@ -1,5 +1,17 @@
-import { GET_CHANNELS, GET_POSTS, ADD_CHANNEL } from './actionsTypes';
-import { createChannel, requestChannels, requestPosts } from '../service';
+import {
+  GET_CHANNELS,
+  GET_POSTS,
+  ADD_CHANNEL,
+  GET_AVATARS,
+} from './actionsTypes';
+import {
+  createChannel,
+  downloadChatAvatars,
+  getChannelAvatars,
+  getChat,
+  getChats,
+  requestPosts,
+} from '../service';
 import { showErrorAlert, showSuccessAlert } from '../../../redux/alertActions';
 
 export const addChannelAction = (channelName) => ({
@@ -12,18 +24,33 @@ export const getChannelsAction = (channels) => ({
   payload: channels,
 });
 
+export const getAvatarAction = (files) => ({
+  type: GET_AVATARS,
+  payload: files,
+});
+
 export const getPostsAction = (posts) => ({
   type: GET_POSTS,
   payload: posts,
 });
 
+export function requestPhotos(channels) {
+  return async (dispatch) => {
+    const photos = await getChannelAvatars(channels);
+
+    dispatch(getAvatarAction(photos));
+  };
+}
+
 export function fetchChannels() {
-  return async (dispatch, getState) => {
-    const channelsExists = getState().channelsState.length > 0;
-    if (!channelsExists) {
-      const channels = await requestChannels();
-      dispatch(getChannelsAction(channels));
-    }
+  return async (dispatch) => {
+    const chats = await getChats();
+    const channels = await Promise.all(chats.chat_ids.map((id) => getChat(id)));
+    const files = await downloadChatAvatars(
+      channels.filter((channel) => channel.photo)
+    );
+    dispatch(getChannelsAction(channels));
+    dispatch(requestPhotos(files));
   };
 }
 
@@ -34,11 +61,10 @@ export function fetchPosts(id) {
     );
 
     if (!postsExists) {
-      requestPosts(id).then((result) => {
-        if (result) {
-          dispatch(getPostsAction(result));
-        }
-      });
+      const result = await requestPosts(id);
+      if (result) {
+        dispatch(getPostsAction(result));
+      }
     }
   };
 }
@@ -50,10 +76,10 @@ export function addChannel(channelName) {
     );
 
     if (!channelExists) {
-      createChannel(channelName).then((result) => {
-        dispatch(addChannelAction(result));
-        dispatch(showSuccessAlert(`Channel ${channelName} added!`));
-      });
+      const channel = await createChannel(channelName);
+
+      dispatch(addChannelAction(channel));
+      dispatch(showSuccessAlert(`Channel ${channelName} added!`));
     } else {
       dispatch(showErrorAlert(`Channel ${channelName} exists!`));
     }
@@ -61,7 +87,7 @@ export function addChannel(channelName) {
 }
 
 export function removeChannel(channelName) {
-  return async (dispatch, getState) => {
+  return (dispatch, getState) => {
     const newChannelsState = getState().channelsState.filter(
       (channel) => channel.name !== channelName
     );
