@@ -27,8 +27,8 @@ class TelegramController {
   };
 
   sendTdParameters = async () => {
-    const apiId = '1267500';
-    const apiHash = 'e04551ce1dad0809f4e200335b9d46d1';
+    const apiId = '';
+    const apiHash = '';
     const { version } = packageJson;
 
     this.send({
