@@ -19,4 +19,4 @@ jobs:
       with:
           ref: ${{ github.event.client_payload.adress }}
     - run: echo ${{ github.event.client_payload.address }}
-    - run: 'echo "field: ${{ github.event.client_payload.address }}"'
+    - run: 'echo "${{ github.event.client_payload.address }}"'
