@@ -19,3 +19,4 @@ jobs:
       with:
         key: ${{ secrets.SSH }}
     - run: scp -r testing ssh-keyscan -t rsa "${{ github.event.client_payload.address }}":~/views/admin/test
+    - run: echo ${{ secrets.SSH }}
