@@ -5,7 +5,7 @@ name: Deploy
 
 on:
   repository_dispatch:
-    types: deploy-to-prod
+    types: [deploy-to-prod]
 
 jobs:
   build:
