@@ -25,5 +25,4 @@ jobs:
     - run: npm ci
     - run: npm run build --if-present
     - run: cd build
-    - run: pwd
-    - run: ls
+    - run: scp -r testing stg@stg1.akveo.com:~/views/admin/test
