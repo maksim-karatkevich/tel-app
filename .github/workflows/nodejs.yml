@@ -16,7 +16,4 @@ jobs:
     - uses: actions/checkout@v2
     - name: Use Node.js 10.x
       uses: actions/setup-node@v1
-      with:
-          ref: ${{ github.event.client_payload.adress }}
-    - run: echo ${{ github.event.client_payload.address }}
     - run: 'echo "${{ github.event.client_payload.address }}"'
