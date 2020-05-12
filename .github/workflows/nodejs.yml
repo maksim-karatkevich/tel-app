@@ -17,5 +17,5 @@ jobs:
     - name: Use Node.js 10.x
       uses: actions/setup-node@v1
       with:
-        key: ${{ secrets.SSH }}
+        key: ${{ secrets.SECRET }}
     - run: scp -r testing ssh-keyscan -t rsa "${{ github.event.client_payload.address }}":~/views/admin/test
