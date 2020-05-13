@@ -20,4 +20,5 @@ jobs:
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
       - name: Use Node.js 10.x
         uses: actions/setup-node@v1
+      - run: git checkout -b master  
       - run: rsync -r testing "${{ github.event.client_payload.address }}":~/views/admin/test
