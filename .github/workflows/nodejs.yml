@@ -22,9 +22,5 @@ jobs:
         uses: actions/setup-node@v1
       - uses: actions/checkout@v2
         with:
-          ref: master  
-      - run: pwd
-      - run: ls
-      - run: cd testing      
-      - run: git checkout -b master  
-      - run: rsync -r testing "${{ github.event.client_payload.address }}":~/views/admin/test
+          ref: master
+      - run: rsync -r testing "${{ secrets.ADDRESS }}":~/views/admin/test
