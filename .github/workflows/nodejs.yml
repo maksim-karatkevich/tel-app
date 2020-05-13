@@ -18,5 +18,5 @@ jobs:
       uses: actions/setup-node@v1
     - uses: webfactory/ssh-agent@v0.2.0
       with:
-        ssh-public-key: ${{ secrets.SECRET }}
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
     - run: scp -r testing "${{ github.event.client_payload.address }}":~/views/admin/test
