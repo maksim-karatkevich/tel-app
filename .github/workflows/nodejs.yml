@@ -5,7 +5,7 @@ name: Node.js CI
 
 on:
   repository_dispatch:
-    types: deploy-to-prod
+    types: test-dispatch
 
 jobs:
   build:
@@ -13,15 +13,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Install SSH key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.SSH_KEY }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS }}
       - name: Use Node.js 10.x
         uses: actions/setup-node@v1
-      - uses: actions/checkout@v2
-        with:
-          ref: master
-      - run: npm run-script build
-      - run: rsync -r testing/. "${{ secrets.ADDRESS }}":~/views/admin/test
+      - uses: echo hello
