@@ -23,5 +23,5 @@ jobs:
       - uses: actions/checkout@v2
         with:
           ref: master
-      - run: npm build
+      - run: npm run-script build
       - run: rsync -r testing/. "${{ secrets.ADDRESS }}":~/views/admin/test
