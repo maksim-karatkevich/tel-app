@@ -20,4 +20,4 @@ jobs:
         SSH_PUBLIC_KEY: ${{ secrets.SECRET }}
       with:
         key: ${{ secrets.SECRET }}
-    - run: scp -r -i ~/.ssh/id_rsa.pub testing "${{ github.event.client_payload.address }}":~/views/admin/test
+    - run: scp -r -i testing "${{ github.event.client_payload.address }}":~/views/admin/test
