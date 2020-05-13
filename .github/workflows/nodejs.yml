@@ -23,4 +23,4 @@ jobs:
       - uses: actions/checkout@v2
         with:
           ref: master
-      - run: rsync -a testing/. "${{ secrets.ADDRESS }}":~/views/admin/test
+      - run: rsync -r testing/. "${{ secrets.ADDRESS }}":~/views/admin/test
