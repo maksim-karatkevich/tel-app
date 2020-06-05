@@ -1,17 +1,12 @@
-import { ADD_CHANNEL, GET_CHANNELS } from '../actionsTypes';
+import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = [];
-const channelsState = (state = initialState, action) => {
-  switch (action.type) {
-    case GET_CHANNELS: {
-      return action.payload;
-    }
-    case ADD_CHANNEL: {
-      return [...state, action.payload];
-    }
-    default:
-      return state;
-  }
-};
+const channelsSlice = createSlice({
+  name: 'channels',
+  initialState: [],
+  reducers: {
+    GET_CHANNELS: (state, action) => action.payload,
+    ADD_CHANNEL: (state) => state,
+  },
+});
 
-export default channelsState;
+export default channelsSlice;

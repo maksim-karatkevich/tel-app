@@ -21,7 +21,6 @@ class TelegramController {
       console.log('init client', request);
       return;
     }
-    console.log(request['@type']);
     // eslint-disable-next-line consistent-return
     return this.client.send(request);
   };

@@ -1,4 +1,4 @@
-import { RESET_ALERT_STATE, SHOW_ALERT } from '../actionTypes';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   showSuccess: false,
@@ -7,17 +7,15 @@ const initialState = {
   errorMessage: '',
 };
 
-const alertState = (state = initialState, action) => {
-  switch (action.type) {
-    case SHOW_ALERT: {
+const alertSlice = createSlice({
+  name: 'alerts',
+  initialState,
+  reducers: {
+    SHOW_ALERT: (state, action) => {
       return { ...state, ...action.payload };
-    }
-    case RESET_ALERT_STATE: {
-      return initialState;
-    }
-    default:
-      return state;
-  }
-};
+    },
+    RESET_ALERT_STATE: () => initialState,
+  },
+});
 
-export default alertState;
+export default alertSlice;

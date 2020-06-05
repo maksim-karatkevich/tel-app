@@ -1,15 +1,11 @@
-import { GET_POSTS } from '../actionsTypes';
+import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = [];
+const postsSlice = createSlice({
+  name: 'posts',
+  initialState: [],
+  reducers: {
+    GET_POSTS: (state, action) => [...state, action.payload],
+  },
+});
 
-const postsState = (state = initialState, action) => {
-  switch (action.type) {
-    case GET_POSTS: {
-      return [...state, action.payload];
-    }
-    default:
-      return state;
-  }
-};
-
-export default postsState;
+export default postsSlice;

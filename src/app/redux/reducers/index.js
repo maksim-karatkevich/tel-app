@@ -1,14 +1,14 @@
 import { combineReducers } from 'redux';
-import channelsState from '../../features/Chanels/redux/reducers/channelsReducer';
-import postsState from '../../features/Chanels/redux/reducers/postsReducer';
-import alertState from './alertReducer';
-import authorizationState from './authorizationReducer';
-import filesState from '../../features/Chanels/redux/reducers/filesReducer';
+import channelsSlice from '../../features/Chanels/redux/reducers/channelsReducer';
+import fileSlice from '../../features/Chanels/redux/reducers/filesReducer';
+import postsSlice from '../../features/Chanels/redux/reducers/postsReducer';
+import alertSlice from './alertReducer';
+import authorizationSlice from './authorizationReducer';
 
 export default combineReducers({
-  channelsState,
-  postsState,
-  alertState,
-  authorizationState,
-  filesState,
+  channelsState: channelsSlice.reducer,
+  postsState: postsSlice.reducer,
+  alertState: alertSlice.reducer,
+  authorizationState: authorizationSlice.reducer,
+  filesState: fileSlice.reducer,
 });
